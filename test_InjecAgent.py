@@ -10,7 +10,7 @@ from utils import (
     jdump, 
     none, 
     load_vllm_model, 
-    form_llm_input_client,
+    form_llm_input_client_InjecAgent,
     predict_gpt,
     test_model_output_vllm, 
     test_model_output_client,
@@ -664,7 +664,7 @@ def main(params, model, tokenizer):
 
         if 'gpt' in params['model_name_or_path']:
             predict_func = predict_gpt
-            outputs_all = test_model_output_client(form_llm_input_client(
+            outputs_all = test_model_output_client(form_llm_input_client_InjecAgent(
                 save_list_first_time, injection_method=none, defense='none'), model, params['instruction_hierarchy'], client, predict_func)[2]
         else:
             try: 
@@ -734,9 +734,9 @@ def main(params, model, tokenizer):
                         continue
                 
                 if attack != 'ds': continue
-                if 'gpt' in params['model_name_or_path'] in params['model_name_or_path']:
+                if 'gpt' in params['model_name_or_path']:
                     predict_func = predict_gpt
-                    outputs_second_step = test_model_output_client(form_llm_input_client(
+                    outputs_second_step = test_model_output_client(form_llm_input_client_InjecAgent(
                         save_list_second_step, injection_method=none, defense='none'), model, params['instruction_hierarchy'], client, predict_func)[2]
                 else: 
                     try:
