@@ -1,0 +1,5 @@
+default:
+    - client_class: ""
+      api_key: "your_api_key"
+      organization: ""
+`

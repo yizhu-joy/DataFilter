@@ -36,6 +36,7 @@ To test our pre-trained DataFilter model:
 
 1. **Download the model from HuggingFace:**
    ```bash
+   git lfs install
    git clone https://huggingface.co/JoyYizhu/DataFilter models/DataFilter
    ```
 
