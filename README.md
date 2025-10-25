@@ -6,8 +6,8 @@
 A defense system designed to protect LLM agent systems against prompt injection attacks. DataFilter provides robust protection while maintaining system utility and performance.
 
 <p align="center">
-  <img src="img/framework.pdf" alt="DataFilter Framework" width="49%"/>
-  <img src="img/results.pdf" alt="DataFilter Results" width="49%"/>
+  <img src="img/framework.png" alt="DataFilter Framework" width="49%"/>
+  <img src="img/results.png" alt="DataFilter Results" width="49%"/>
   <br>
 </p>
 
