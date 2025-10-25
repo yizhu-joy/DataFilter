@@ -53,7 +53,7 @@ def recursive_filter(obj, filter_model, instruction):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Data Filter Inference Script")
-    parser.add_argument("--model_path", type=str, default="models/DataFilter/checkpoint-300", help="Path to the pre-trained model")
+    parser.add_argument("--model_path", type=str, default="models/DataFilter", help="Path to the pre-trained model")
 
     test_inputs_JSON = [
         {

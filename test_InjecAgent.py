@@ -779,7 +779,7 @@ def create_parser():
     
     # Filter configuration
     parser.add_argument('--filter_model_path', type=str, 
-                        default='models/DataFilter/checkpoint-300',
+                        default='models/DataFilter',
                         help='Path to the filter model')
     
     # Defense configuration
