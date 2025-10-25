@@ -180,7 +180,7 @@ def form_llm_input(data, injection_method, apply_chat_template, instruction_hier
     if 'datafilter' in defense:
         os.environ["CUDA_VISIBLE_DEVICES"]="1"
         filter_model = LLM(
-            model="models/llama31_8b_filter/",
+            model="models/DataFilter/checkpoint-300",
             tensor_parallel_size=1,
             dtype="bfloat16"
         )
@@ -282,7 +282,7 @@ def form_llm_input_client(data, injection_method, defense):
     if 'datafilter' in defense:
         os.environ["CUDA_VISIBLE_DEVICES"]="1"
         filter_model = LLM(
-            model="models/llama31_8b_filter/",
+            model="models/DataFilter/checkpoint-300",
             tensor_parallel_size=1,
             dtype="bfloat16"
         )
@@ -386,7 +386,7 @@ def form_llm_input_client_InjecAgent(data, injection_method, defense):
     if 'datafilter' in defense:
         os.environ["CUDA_VISIBLE_DEVICES"]="1"
         filter_model = LLM(
-            model="models/llama31_8b_filter/",
+            model="models/DataFilter/checkpoint-300",
             tensor_parallel_size=1,
             dtype="bfloat16"
         )

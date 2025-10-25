@@ -63,7 +63,7 @@ class DataConfig:
 @dataclass
 class TrainingConfig(TrainingArguments):
     """Training configuration extending HuggingFace TrainingArguments."""
-    output_dir: str = field(default="./models/llama31_8b_filter")
+    output_dir: str = field(default="./models/DataFilter")
     max_steps: int = field(default=300)
     per_device_train_batch_size: int = field(default=1)
     gradient_accumulation_steps: int = field(default=16)
