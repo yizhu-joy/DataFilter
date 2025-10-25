@@ -27,6 +27,7 @@ conda create -n py312vllm python=3.12
 conda activate py312vllm
 pip install vllm pandas 'accelerate>=0.26.0' deepspeed datasets==2.20.0
 git clone https://github.com/yizhu-joy/DataFilter.git
+cd DataFilter
 ```
 
 ### Testing the Pre-trained Model
