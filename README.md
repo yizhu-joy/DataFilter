@@ -30,9 +30,9 @@ git clone https://github.com/yizhu-joy/DataFilter.git
 cd DataFilter
 ```
 
-### Testing the Pre-trained Model
+### Testing the DataFilter Model
 
-To test our pre-trained DataFilter model:
+To test our DataFilter model:
 
 **Run DataFilter inference demo:**
    ```bash
