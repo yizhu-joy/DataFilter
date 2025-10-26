@@ -245,7 +245,7 @@ python test_InjecAgent.py --defense datafilter \
    ```python
    if config.defense == "data_filter":
        data_filter_element = DataFilterDefense(
-           model_path="/path/to/DataFilter/checkpoint-300"
+           model_path="JoyYizhu/DataFilter"
        )
        tools_loop = ToolsExecutionLoop(
            [ToolsExecutor(tool_output_formatter), data_filter_element, llm]

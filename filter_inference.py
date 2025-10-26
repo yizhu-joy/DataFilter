@@ -43,12 +43,10 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    sampling_params = SamplingParams(temperature=0, max_tokens=1024)
     filter_model = LLM(
         model=args.model_path,
         tensor_parallel_size=1,
-        dtype="bfloat16",
-        sampling_params=sampling_params
+        dtype="bfloat16"
     )
 
 
@@ -58,12 +56,12 @@ if __name__ == "__main__":
         data = item["data"]
         data = parse(data)
         filtered_data = recursive_filter(data, filter_model, instruction)
-        print(f"\n=== Test Input {idx+1} ===")
+        print(f"\n\n=== Test Input {idx+1} ===")
         print("User Instruction:")
         print(instruction)
-        print("Original Data:")
+        print("\n\nOriginal Data:")
         print(data)
-        print("Filtered Data:")
+        print("\n\n\nFiltered Data:")
         print(filtered_data)
-        print("=====================\n")
+        print("=====================\n\n")
 
