@@ -163,7 +163,7 @@ def _to_valid_json_from_pythonish(s: str) -> str:
     return ''.join(out)
 
 
-def robust_parse(obs: str) -> dict:
+def parse(obs: str) -> dict:
     def _escape_newlines_in_strings(s: str) -> str:
         out, i, n = [], 0, len(s)
         in_str, quote = False, None

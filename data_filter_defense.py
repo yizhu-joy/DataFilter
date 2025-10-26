@@ -1,7 +1,7 @@
 import json
 from vllm import LLM, SamplingParams
 from agentdojo.agent_pipeline.base_pipeline_element import BasePipelineElement
-from agentdojo.agent_pipeline.inference_utils import robust_parse
+from agentdojo.agent_pipeline.inference_utils import parse
 from agentdojo.types import ChatMessage, ChatToolResultMessage, text_content_block_from_string
 from agentdojo.functions_runtime import Env, EmptyEnv, FunctionsRuntime
 
@@ -87,7 +87,7 @@ class DataFilterDefense(BasePipelineElement):
     
                     raw_data = msg["content"][0]["content"]
     
-                    json_data = robust_parse(raw_data)
+                    json_data = parse(raw_data)
                     cleaned = recursive_filter(
                         json_data,
                         filter_model=self.filter_model,

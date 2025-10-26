@@ -16,7 +16,7 @@ from utils import (
     test_model_output_client,
     summary_results, 
 )
-from inference_utils import robust_parse
+from inference_utils import parse
 from vllm import LLM, SamplingParams
 
 
@@ -635,7 +635,7 @@ def main(params, model, tokenizer):
                 text_input, user_prompt_filled, observation, user_input, user_prompt_before_observation = prepare_inputs(sys_prompt, user_prompt, apply_chat_template, params['instruction_hierarchy'], item, tool_dict, step_2=False)
                 
                 if 'datafilter' in params['defense']:
-                    observation_dict = robust_parse(observation)
+                    observation_dict = parse(observation)
                     observation_cleaned = recursive_filter(observation_dict, filter_model=filter_model, instruction = user_input)
                     observation_cleaned_str = json.dumps(observation_cleaned, ensure_ascii=False, indent=2)
                     user_prompt_filled_cleaned = user_prompt_before_observation + observation_cleaned_str
@@ -701,7 +701,7 @@ def main(params, model, tokenizer):
 
                             # Apply filter LLM for second step if enabled
                             if 'datafilter' in params['defense']:
-                                observation_dict = robust_parse(observation)
+                                observation_dict = parse(observation)
                                 observation_cleaned = recursive_filter(observation_dict, filter_model=filter_model, instruction = user_input)
                                 observation_cleaned_str = json.dumps(observation_cleaned, ensure_ascii=False, indent=2)
                                 user_prompt_filled_cleaned = user_prompt_before_observation + observation_cleaned_str
@@ -779,7 +779,7 @@ def create_parser():
     
     # Filter configuration
     parser.add_argument('--filter_model_path', type=str, 
-                        default='models/DataFilter',
+                        default='JoyYizhu/DataFilter',
                         help='Path to the filter model')
     
     # Defense configuration

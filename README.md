@@ -34,16 +34,11 @@ cd DataFilter
 
 To test our pre-trained DataFilter model:
 
-1. **Download the model from HuggingFace:**
-   ```bash
-   git lfs install
-   git clone https://huggingface.co/JoyYizhu/DataFilter models/DataFilter
-   ```
-
-2. **Run DataFilter inference demo:**
+**Run DataFilter inference demo:**
    ```bash
    python filter_inference.py
    ```
+
 
 ## Reproducing Paper Results
 

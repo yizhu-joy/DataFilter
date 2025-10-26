@@ -1,4 +1,4 @@
-from filter_inference import recursive_filter, robust_parse
+from filter_inference import recursive_filter, parse
 import json
 import yaml
 from openai import OpenAI, AzureOpenAI
@@ -180,7 +180,7 @@ def form_llm_input(data, injection_method, apply_chat_template, instruction_hier
     if 'datafilter' in defense:
         os.environ["CUDA_VISIBLE_DEVICES"]="1"
         filter_model = LLM(
-            model="models/DataFilter",
+            model="JoyYizhu/DataFilter",
             tensor_parallel_size=1,
             dtype="bfloat16"
         )
@@ -204,7 +204,7 @@ def form_llm_input(data, injection_method, apply_chat_template, instruction_hier
 
         if 'datafilter' in defense and d_item.get("input"):
             if d_item['input'] is not None and len(d_item['input']) > 0:
-                input_json = robust_parse(d_item["input"])
+                input_json = parse(d_item["input"])
                 instruction = d_item["instruction_only"]
                 input_cleaned = recursive_filter(obj=input_json, filter_model=filter_model, instruction=instruction)
                 input_cleaned_str = str(input_cleaned)
@@ -282,7 +282,7 @@ def form_llm_input_client(data, injection_method, defense):
     if 'datafilter' in defense:
         os.environ["CUDA_VISIBLE_DEVICES"]="1"
         filter_model = LLM(
-            model="models/DataFilter",
+            model="JoyYizhu/DataFilter",
             tensor_parallel_size=1,
             dtype="bfloat16"
         )
@@ -316,7 +316,7 @@ def form_llm_input_client(data, injection_method, defense):
 
         if 'datafilter' in defense and d_item.get("input"):
             if d_item['input'] is not None and len(d_item['input']) > 0:
-                input_json = robust_parse(d_item["input"])
+                input_json = parse(d_item["input"])
                 instruction = d_item["instruction_only"]
                 input_cleaned = recursive_filter(obj=input_json, filter_model=filter_model, instruction=instruction)
                 input_cleaned_str = str(input_cleaned)
@@ -386,7 +386,7 @@ def form_llm_input_client_InjecAgent(data, injection_method, defense):
     if 'datafilter' in defense:
         os.environ["CUDA_VISIBLE_DEVICES"]="1"
         filter_model = LLM(
-            model="models/DataFilter",
+            model="JoyYizhu/DataFilter",
             tensor_parallel_size=1,
             dtype="bfloat16"
         )
@@ -424,7 +424,7 @@ def form_llm_input_client_InjecAgent(data, injection_method, defense):
 
         if 'datafilter' in defense and d_item.get("input"):
             if d_item['input'] is not None and len(d_item['input']) > 0:
-                input_json = robust_parse(d_item["input"])
+                input_json = parse(d_item["input"])
                 instruction = d_item["instruction"]
                 input_cleaned = recursive_filter(obj=input_json, filter_model=filter_model, instruction=instruction)
                 input_cleaned_str = str(input_cleaned)

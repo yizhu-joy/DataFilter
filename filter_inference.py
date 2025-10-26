@@ -1,10 +1,10 @@
 import argparse
-from vllm import LLM
-from inference_utils import recursive_filter
+from vllm import LLM, SamplingParams
+from inference_utils import recursive_filter, parse
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Data Filter Inference Script")
-    parser.add_argument("--model_path", type=str, default="models/DataFilter", help="Path to the pre-trained model")
+    parser.add_argument("--model_path", type=str, default="JoyYizhu/DataFilter", help="Path to the pre-trained model")
 
     test_inputs = [
         {
@@ -43,21 +43,21 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
+    sampling_params = SamplingParams(temperature=0, max_tokens=1024)
     filter_model = LLM(
         model=args.model_path,
         tensor_parallel_size=1,
-        dtype="bfloat16"
+        dtype="bfloat16",
+        sampling_params=sampling_params
     )
 
 
     # Apply filter
-    instructions = [item["instruction"] for item in test_inputs]
-    datas = [item["data"] for item in test_inputs]
-    filtered_datas = recursive_filter(filter_model, instructions, datas)
     for idx, item in enumerate(test_inputs):
         instruction = item["instruction"]
         data = item["data"]
-        filtered_data = filtered_datas[idx]
+        data = parse(data)
+        filtered_data = recursive_filter(data, filter_model, instruction)
         print(f"\n=== Test Input {idx+1} ===")
         print("User Instruction:")
         print(instruction)
