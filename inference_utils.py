@@ -43,11 +43,46 @@ def apply_filter_in_batch(filter_model, instructions: list, datas: list) -> list
 
 
 def recursive_filter(obj, filter_model, instruction):
-    """Apply the filter to the current object, the input object can be a dict, list, or string"""
-    if isinstance(obj, dict): return {k: recursive_filter(v, filter_model, instruction) for k, v in obj.items()}
-    elif isinstance(obj, list): return [recursive_filter(v, filter_model, instruction) for v in obj]
-    elif isinstance(obj, str): return apply_filter_for_single(filter_model=filter_model, instruction=instruction, data=obj)
-    else: return obj
+    """Apply the filter to all strings in the object (dict/list/str) in a single batch call."""
+
+    # 1) Collect all strings in traversal order
+    strings = []
+
+    def collect(o):
+        if isinstance(o, dict):
+            for v in o.values():
+                collect(v)
+        elif isinstance(o, list):
+            for v in o:
+                collect(v)
+        elif isinstance(o, str):
+            strings.append(o)
+        # non-string scalars are ignored
+
+    collect(obj)
+
+    # If there are no strings, just return the object as-is
+    if not strings:
+        return obj
+
+    # 2) Batch filter all collected strings
+    instructions = [instruction] * len(strings)
+    filtered_strings = apply_filter_in_batch(filter_model, instructions, strings)
+
+    # 3) Second pass: rebuild the structure, replacing strings with filtered ones
+    it = iter(filtered_strings)
+
+    def rebuild(o):
+        if isinstance(o, dict):
+            return {k: rebuild(v) for k, v in o.items()}
+        elif isinstance(o, list):
+            return [rebuild(v) for v in o]
+        elif isinstance(o, str):
+            return next(it)
+        else:
+            return o
+
+    return rebuild(obj)
 
 def _is_apostrophe(s: str, i: int) -> bool:
         """True iff s[i] is a literal apostrophe between alphanumerics: e.g., Doe's / it's."""
@@ -255,4 +290,5 @@ def parse(obs: str) -> dict:
                 return _clean_inner_quotes(ast.literal_eval(py_obs))
     except Exception: pass
     return str(raw_obs) 
+
         
