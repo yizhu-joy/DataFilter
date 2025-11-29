@@ -107,39 +107,44 @@ class DataFilterDefense(BasePipelineElement):
         messages: list[ChatMessage] = [],
         extra_args: dict = {},
     ):
+        # Only run filtering if the last message is a tool message
         if len(messages) == 0 or messages[-1]["role"] != "tool":
             return query, runtime, env, messages, extra_args
     
-        for msg in messages:
-            if msg["role"] == "tool" and "content" in msg:
-                try:
-                    # extract user instruction
-                    user_instruction = ""
-                    for m in messages:
-                        if m["role"] == "user":
-                            user_instruction = m["content"][0]["content"]
-                            break
+        # Only clean the LAST tool message
+        msg = messages[-1]
     
-                    raw_data = msg["content"][0]["content"]
+        if msg["role"] == "tool" and "content" in msg:
+            try:
+                # extract user instruction (same logic as before)
+                user_instruction = ""
+                for m in messages:
+                    if m["role"] == "user":
+                        user_instruction = m["content"][0]["content"]
+                        break
     
-                    json_data = parse(raw_data)
-                    cleaned = recursive_filter(
-                        json_data,
-                        filter_model=self.filter_model,
-                        instruction=user_instruction
-                    )
-                    cleaned_str = json.dumps(cleaned, indent=2, ensure_ascii=False)
-
-                    print("\nUser instruction:", user_instruction)
-                    print("\n\n\n\n---------------------------------------------------------")
-                    print("Tool call result (raw):")
-                    print(raw_data)
-                    print("\n\n\n\nTool call result (cleaned):")
-                    print(cleaned_str)
-
-                    msg["content"] = [text_content_block_from_string(cleaned_str)]
-
-                except Exception as e:
-                    print(f"[DataFilterDefense] Skipped cleaning due to error: {e}")
-                    continue
+                raw_data = msg["content"][0]["content"]
+    
+                json_data = parse(raw_data)
+                cleaned = recursive_filter(
+                    json_data,
+                    filter_model=self.filter_model,
+                    instruction=user_instruction
+                )
+                cleaned_str = json.dumps(cleaned, indent=2, ensure_ascii=False)
+    
+                print("\nUser instruction:", user_instruction)
+                print("\n\n---------------------------------------------------------")
+                print("Tool call result (raw):")
+                print(raw_data)
+                print("\n\n---------------------------------------------------------")
+                print("Tool call result (cleaned):")
+                print(cleaned_str)
+    
+                # Replace ONLY the last tool message's content
+                msg["content"] = [text_content_block_from_string(cleaned_str)]
+    
+            except Exception as e:
+                print(f"[DataFilterDefense] Skipped cleaning due to error: {e}")
+    
         return query, runtime, env, messages, extra_args
